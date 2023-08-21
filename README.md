@@ -1,0 +1,2 @@
+# JavaCATPractice
+CAT PRACICES OF JAVA
