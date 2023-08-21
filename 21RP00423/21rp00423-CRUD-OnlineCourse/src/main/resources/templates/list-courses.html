@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="https://www.thymeleaf.org">
+<head>
+  <title>Courses List</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    /* Common styles for both modes */
+    body {
+      transition: background-color 0.3s, color 0.3s;
+      margin-bottom: 80px; /* Add space for the footer */
+    }
+
+    .navbar {
+      transition: background-color 0.3s;
+    }
+
+    /* Day mode styles */
+    body.day-mode {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    .navbar.day-mode {
+      background-color: #3f51b5;
+    }
+
+    /* Night mode styles */
+    body.night-mode {
+      background-color: #121212;
+      color: #ccc;
+    }
+
+    .navbar.night-mode {
+      background-color: #333;
+    }
+
+    .navbar-toggler-icon {
+      color: #fff;
+    }
+
+    .night-mode-toggler {
+      color: #ccc;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .night-mode-toggler:hover {
+      color: #fff;
+    }
+
+    .add-course-button {
+      background-color: #007bff; /* Blue color for day mode */
+      color: #fff;
+      border: none;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .add-course-button.night-mode {
+      background-color: #333;
+      color: #ccc;
+    }
+
+    .add-course-button:hover {
+      background-color: #0056b3; /* Darker blue for day mode */
+    }
+
+    .add-course-button.night-mode:hover {
+      background-color: #222;
+    }
+
+    .course-card {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      height: 300px; /* Set the fixed height for the cards */
+      overflow: hidden;
+      position: relative;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .course-card.night-mode {
+      border-color: #666;
+      background-color: #1e1e1e;
+      color: #ccc;
+    }
+
+    .course-card h4 {
+      margin-bottom: 10px;
+    }
+
+    .course-card p {
+      margin-bottom: 10px;
+    }
+
+    .button-container {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+    }
+
+    .button-container a {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+    }
+  </style>
+</head>
+<body class="day-mode">
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#" style="color: #121212;">OnlineCourse CRUD</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <button onclick="toggleNightMode()" class="btn btn-link night-mode-toggler">Night Mode</button>
+    <a th:href="@{addCourseForm}" class="btn btn-primary ml-2 add-course-button">Add Course</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h2 class="mt-4">List of Courses</h2>
+  <div class="row">
+    <div th:each="course: ${Courses}" class="col-md-4">
+      <div class="course-card">
+        <h4 th:text="${course.course_name}"></h4>
+        <p><strong>Course Code:</strong> <span th:text="${course.course_code}"></span></p>
+        <p th:text="${course.course_description}"></p>
+        <p><strong>Price:</strong> <span th:text="${course.price}"></span></p>
+        <div class="button-container">
+          <a th:href="@{/showUpdateForm(courseId=${course.id})}" class="btn btn-info">Update</a>
+          <a th:href="@{/deleteCourse(courseId=${course.id})}" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer night-mode">
+  <p>&copy; <span th:text="${#dates.year(#dates.createNow())}"></span> All rights reserved. Developed by Lea Ishimwe.</p>
+</div>
+
+<script>
+  // Toggle night mode
+  function toggleNightMode() {
+    const body = document.body;
+    const navbar = document.querySelector('.navbar');
+    const nightModeToggler = document.querySelector('.night-mode-toggler');
+    const addCourseButton = document.querySelector('.add-course-button');
+    const courseCards = document.querySelectorAll('.course-card');
+    
+    body.classList.toggle('night-mode');
+    navbar.classList.toggle('night-mode');
+    nightModeToggler.classList.toggle('night-mode');
+    addCourseButton.classList.toggle('night-mode');
+    
+    courseCards.forEach(card => {
+      card.classList.toggle('night-mode');
+    });
+  }
+</script>
+
+</body>
+</html>
